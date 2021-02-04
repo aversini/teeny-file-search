@@ -10,7 +10,7 @@
     "url": "git@github.com:aversini/teeny-file-search.git"
   },
   "bin": {
-    "teeny-file-search": "bin/index.js"
+    "teeny-file-search": "bin/teeny-file-search.js"
   },
   "files": [
     "bin",
