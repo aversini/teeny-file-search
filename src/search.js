@@ -26,10 +26,8 @@ const ownerNames = {
   0: "root",
 };
 
-let rePattern,
-  totalDirScanned = 0,
+let totalDirScanned = 0,
   totalFileScanned = 0;
-const ignoreBlacklists = false;
 
 function extractMode(mode) {
   const modeDec = parseInt(mode.toString(OCTAL), DECIMAL)
@@ -77,6 +75,7 @@ function convertDate(date) {
 const getOwnerNameFromId = async (uid) => {
   let res;
 
+  /* istanbul ignore if */
   if (!ownerNames[uid]) {
     try {
       res = await runCommand(`id -nu ${uid}`);
@@ -95,9 +94,9 @@ const formatLongListings = async (stat, type) => {
   const delim = type === STR_TYPE_FILE ? "-" : "d";
   return {
     mode: delim + extractMode(stat.mode),
-    size: ` ${convertSize(stat.size)}`,
-    mdate: ` ${convertDate(stat.mtime)} `,
-    owner: `  ${await getOwnerNameFromId(stat.uid)}`,
+    size: `${convertSize(stat.size)}`,
+    mdate: `${convertDate(stat.mtime)}`,
+    owner: `${await getOwnerNameFromId(stat.uid)}`,
   };
 };
 
@@ -114,15 +113,18 @@ const printListing = async (nodes, { type, long }) => {
       name,
       separator = "";
 
+    /* istanbul ignore if */
     if (long) {
       l = await formatLongListings(node.stat, type);
       separator = "\t";
     }
     name = path.relative(process.cwd(), node.name);
+    /* istanbul ignore if */
     if (type === STR_TYPE_DIRECTORY) {
       name = name === "" ? "." : `./${name}`;
     }
     name = type === STR_TYPE_FILE ? kleur.gray(name) : kleur.blue(name);
+    /* istanbul ignore else */
     if (node && node.match && node.shortname) {
       if (type === STR_TYPE_FILE) {
         name = name.replace(
@@ -169,24 +171,20 @@ const printStatistics = ({
   );
 };
 
-function checkPattern(str, type) {
+function checkPattern(rePattern, str) {
   if (rePattern) {
-    if (type === STR_TYPE_FILE || type === STR_TYPE_DIRECTORY) {
-      rePattern.lastIndex = 0;
-      return rePattern.exec(str);
-    }
+    rePattern.lastIndex = 0;
+    return rePattern.exec(str);
   }
   return true;
 }
 
 function ignoreFolders(dir) {
-  if (ignoreBlacklists) {
-    return false;
-  }
+  dirBlacklist.lastIndex = 0;
   return dirBlacklist.exec(basename(dir));
 }
 
-function hidden(path) {
+function isNotDotNode(path) {
   return path[0] !== ".";
 }
 
@@ -205,7 +203,7 @@ const scanFileSystem = async (
     if (stat.isDirectory() && !ignoreFolders(strPath)) {
       totalDirScanned++;
       if (options.type === STR_TYPE_DIRECTORY) {
-        if ((res = checkPattern(strPath, options.type))) {
+        if ((res = checkPattern(options.rePattern, strPath, options.type))) {
           dirsList.push({
             match: res,
             name: strPath,
@@ -219,7 +217,7 @@ const scanFileSystem = async (
       try {
         files = fs.readdirSync(strPath);
         scanFileSystem(
-          files.filter(hidden).map(function (file) {
+          files.filter(isNotDotNode).map(function (file) {
             return join(strPath, file);
           }),
           options,
@@ -232,7 +230,7 @@ const scanFileSystem = async (
       totalFileScanned++;
       if (options.type === STR_TYPE_FILE) {
         shortname = basename(strPath);
-        if ((res = checkPattern(shortname, options.type))) {
+        if ((res = checkPattern(options.rePattern, shortname, options.type))) {
           filesList.push({
             match: res[0],
             name: strPath,
@@ -256,13 +254,17 @@ const search = async ({ path, pattern, type, boring, long, stats }) => {
     perf.start();
   }
 
+  /* istanbul ignore else */
   if (boring) {
     kleur.enabled = false;
   }
 
-  rePattern = pattern ? new RegExp(pattern) : null;
+  const rePattern = pattern ? new RegExp(pattern) : null;
 
-  const { dirsList, filesList } = await scanFileSystem([path], { type });
+  const { dirsList, filesList } = await scanFileSystem([path], {
+    type,
+    rePattern,
+  });
   await printListing(type === STR_TYPE_FILE ? filesList : dirsList, {
     type,
     long,
@@ -282,5 +284,18 @@ const search = async ({ path, pattern, type, boring, long, stats }) => {
 };
 
 module.exports = {
+  // public methods
   search,
+  // private methods
+  checkPattern,
+  convertDate,
+  convertSize,
+  extractMode,
+  formatLongListings,
+  getOwnerNameFromId,
+  isNotDotNode,
+  ignoreFolders,
+  printListing,
+  printStatistics,
+  scanFileSystem,
 };

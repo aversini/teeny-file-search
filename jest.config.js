@@ -54,12 +54,6 @@ module.exports = {
       lines: 100,
       statements: 100,
     },
-    "src/deepEqual.js": {
-      branches: 85,
-      functions: 100,
-      lines: 95,
-      statements: 95,
-    },
   },
 
   /**
