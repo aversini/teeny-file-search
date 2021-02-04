@@ -62,13 +62,14 @@ function convertSize(bytes) {
   return new Array(len + 1 - str.length).join(" ") + str;
 }
 
-function convertDate(date) {
+function convertDate(date, timeZone) {
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
+    ...timeZone,
   }).format(date);
 }
 

@@ -46,7 +46,9 @@ describe("when testing for individual utilities with no logging side-effects", (
 
   it("should convert a timestamp into a human readable string", async () => {
     const someDate = 1612459361926;
-    expect(convertDate(someDate)).toStrictEqual("Feb 4, 09:22");
+    expect(convertDate(someDate, { timeZone: "UTC" })).toStrictEqual(
+      "Feb 4, 17:22"
+    );
   });
 
   it("should get the owner name based on the id", async () => {
@@ -64,12 +66,14 @@ describe("when testing for individual utilities with no logging side-effects", (
         },
         "f"
       )
-    ).toStrictEqual({
-      mode: "-rw-r--r--",
-      size: "   1M",
-      mdate: "Feb 4, 09:22",
-      owner: "root",
-    });
+    ).toStrictEqual(
+      expect.objectContaining({
+        mode: "-rw-r--r--",
+        size: "   1M",
+        owner: "root",
+      })
+    );
+
     expect(
       await formatLongListings(
         {
@@ -80,12 +84,13 @@ describe("when testing for individual utilities with no logging side-effects", (
         },
         "d"
       )
-    ).toStrictEqual({
-      mode: "drw-r--r--",
-      size: "   1M",
-      mdate: "Feb 4, 09:22",
-      owner: "root",
-    });
+    ).toStrictEqual(
+      expect.objectContaining({
+        mode: "drw-r--r--",
+        size: "   1M",
+        owner: "root",
+      })
+    );
   });
 
   it("should return an array with the matched string", async () => {
