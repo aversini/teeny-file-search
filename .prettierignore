@@ -1,0 +1,3 @@
+# ignore third party code
+src/deepEqual.js
+src/__tests__/deepEqual.tests.js
