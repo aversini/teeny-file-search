@@ -18,10 +18,23 @@ const optionParseType = (value) => {
   return value;
 };
 
+const optionParseGrep = (value) => {
+  if (value !== "" && program.opts().type === "d") {
+    throw new commander.InvalidOptionArgumentError(
+      `Options "grep" and "type" = "d" are incompatible.`
+    );
+  }
+  return value;
+};
+
 program
   .version(pkg.version, "-v, --version", "Output the current version")
   .arguments("[path]")
-  .option("-p, --pattern <string>", "A regular expression to match", null)
+  .option(
+    "-p, --pattern <string>",
+    "A regular expression to match file or folder names",
+    null
+  )
   .option(
     "-t, --type <string>",
     "Search for files (f) or directories (d)",
@@ -35,6 +48,11 @@ program
   .option(
     "-c, --command <cmd>",
     "Command to execute over each node (ex: chmod +x)"
+  )
+  .option(
+    "-g, --grep <pattern>",
+    "A regular expression to match the content of the files found",
+    optionParseGrep
   )
   .helpOption("-h, --help", "Display help instructions");
 
@@ -63,6 +81,10 @@ if (program.args.length) {
  * Merging default configuration with the
  * preferences shared by the user.
  */
+if (customCfg.grep) {
+  // forcing simplified display if grep is true.
+  customCfg.short = true;
+}
 const config = shallowMerge(defaults, customCfg);
 
 (async () => {

@@ -1,7 +1,9 @@
 const boxen = require("boxen");
 const { green, yellow } = require("kleur");
+const fs = require("fs");
 const { runCommand } = require("teeny-js-utilities");
 const TeenyLogger = require("teeny-logger");
+const kleur = require("kleur");
 const logger = new TeenyLogger({
   boring: process.env.NODE_ENV === "test",
 });
@@ -150,6 +152,42 @@ async function runCommandOnNode(node, command) {
   }
 }
 
+async function runGrepOnNode(node, rePattern) {
+  try {
+    const lines = [];
+    let totalMatchingLines = 0;
+    const buffer = fs.readFileSync(node, "utf8").split("\n");
+    // console.log("==> buffer: ", buffer);
+
+    buffer.forEach(function (line, lineNumber) {
+      let res;
+      rePattern.lastIndex = 0;
+      if (!(res = rePattern.exec(line))) {
+        return;
+      }
+      totalMatchingLines++;
+      if (lineNumber > 0) {
+        lines.push(`${lineNumber}: ${kleur.grey(buffer[lineNumber - 1])}`);
+      }
+      lines.push(
+        `${lineNumber + 1}: ${kleur.grey(
+          line.replace(rePattern, kleur.black().bgYellow(res[0]))
+        )}`
+      );
+      // eslint-disable-next-line no-magic-numbers
+      lines.push(`${lineNumber + 2}: ${kleur.grey(buffer[lineNumber + 1])}`);
+      lines.push("");
+    });
+    return {
+      totalMatchingLines,
+      results: lines.length ? lines : [],
+    };
+  } catch (e) {
+    /* istanbul ignore next */
+    logger.error(e);
+  }
+}
+
 module.exports = {
   convertDate,
   convertSize,
@@ -159,6 +197,7 @@ module.exports = {
   getOwnerNameFromId,
   printStatistics,
   runCommandOnNode,
+  runGrepOnNode,
   STR_TYPE_BOTH,
   STR_TYPE_DIRECTORY,
   STR_TYPE_FILE,

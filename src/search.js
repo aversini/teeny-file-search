@@ -2,6 +2,7 @@
 const fs = require("fs");
 const kleur = require("kleur");
 const { basename, join, relative } = require("path");
+const plur = require("plur");
 const { Performance } = require("teeny-js-utilities");
 const TeenyLogger = require("teeny-logger");
 const logger = new TeenyLogger({
@@ -14,6 +15,7 @@ const {
   formatLongListings,
   printStatistics,
   runCommandOnNode,
+  runGrepOnNode,
   STR_TYPE_BOTH,
   STR_TYPE_DIRECTORY,
   STR_TYPE_FILE,
@@ -25,6 +27,7 @@ class Search {
     command,
     dot,
     foldersBlacklist,
+    grep,
     ignoreCase,
     short,
     path,
@@ -49,6 +52,12 @@ class Search {
     this.totalDirFound = 0;
     this.totalFileFound = 0;
     this.command = command ? command.trim() : null;
+    try {
+      this.grep = grep ? new RegExp(grep, "g") : null;
+    } catch (e) {
+      logger.error(e);
+      process.exit(1);
+    }
   }
 
   ignoreFolders = (dir) => {
@@ -166,16 +175,37 @@ class Search {
         name = relative(process.cwd(), node.name);
         const match = node.match ? new RegExp(node.match, "g") : node.match;
         name = color(name.replace(match, kleur.black().bgYellow(node.match)));
-        logger.log(
-          ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
-          l.mode.trim(),
-          l.owner.trim(),
-          l.size.trim(),
-          l.mdate,
-          name
-        );
-        if (node.command) {
-          await runCommandOnNode(node.name, node.command);
+
+        if (this.grep && node.type === STR_TYPE_FILE) {
+          const { totalMatchingLines, results } = await runGrepOnNode(
+            node.name,
+            this.grep
+          );
+          if (totalMatchingLines) {
+            const occurrences = plur("occurrence", totalMatchingLines);
+            logger.log(
+              ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
+              l.mode.trim(),
+              l.owner.trim(),
+              l.size.trim(),
+              l.mdate,
+              name,
+              `(${kleur.white(totalMatchingLines)} ${occurrences})`
+            );
+            logger.log(`${results.join("\n")}\n`);
+          }
+        } /* istanbul ignore else */ else if (!this.grep) {
+          logger.log(
+            ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
+            l.mode.trim(),
+            l.owner.trim(),
+            l.size.trim(),
+            l.mdate,
+            name
+          );
+          if (node.command) {
+            await runCommandOnNode(node.name, node.command);
+          }
         }
       }
     }

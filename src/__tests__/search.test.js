@@ -101,7 +101,7 @@ describe("when testing for utilities with logging side-effects", () => {
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
   });
 
-  it("should find and list files ignore the case based on the arguments", async () => {
+  it("should find and list files while ignoring the case based on the arguments", async () => {
     const search = new Search(
       shallowMerge(
         {
@@ -122,12 +122,11 @@ describe("when testing for utilities with logging side-effects", () => {
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
   });
 
-  it("should find and list all files when there is no pattern provided", async () => {
+  it("should find and list all files and directories when there is no pattern provided", async () => {
     const search = new Search(
       shallowMerge(
         {
           path: `${process.cwd()}`,
-          type: "f",
           boring: true,
           short: true,
           stats: true,
@@ -138,6 +137,7 @@ describe("when testing for utilities with logging side-effects", () => {
     await search.start();
     expect(mockLog).toHaveBeenCalledWith(" bin/teeny-file-search.js");
     expect(mockLog).toHaveBeenCalledWith(" package.json");
+    expect(mockLog).toHaveBeenCalledWith(" src");
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
   });
 
@@ -200,5 +200,63 @@ describe("when testing for utilities with logging side-effects", () => {
     expect(mockLog).not.toHaveBeenCalledWith(
       expect.stringContaining("teeny-file-search")
     );
+  });
+
+  it("should grep some text on the file that matches the pattern", async () => {
+    const config = shallowMerge(
+      {
+        path: `${process.cwd()}`,
+        boring: true,
+        short: true,
+        stats: false,
+        pattern: "README.md",
+      },
+      defaults
+    );
+    config.grep = "^# ";
+
+    const search = new Search(config);
+    await search.start();
+    expect(mockLog).toHaveBeenCalledWith(" README.md (1 occurrence)");
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("# Teeny File Search")
+    );
+  });
+
+  it("should grep some text on the file that matches the pattern", async () => {
+    const config = shallowMerge(
+      {
+        path: `${process.cwd()}`,
+        boring: true,
+        short: true,
+        stats: false,
+        pattern: "package.json",
+      },
+      defaults
+    );
+    config.grep = "ependencies";
+
+    const search = new Search(config);
+    await search.start();
+    expect(mockLog).toHaveBeenCalledWith(" package.json (2 occurrences)");
+  });
+
+  it("should exit in error if the grep pattern is invalid", async () => {
+    const config = shallowMerge(
+      {
+        path: `${process.cwd()}`,
+        boring: true,
+        short: true,
+        stats: false,
+        pattern: "package.json",
+      },
+      defaults
+    );
+    config.grep = "description [";
+
+    const search = new Search(config);
+    await search.start();
+    expect(mockLog).not.toHaveBeenCalledWith(" package.json (1 occurrence)");
+    expect(mockExit).toHaveBeenCalledWith(1);
   });
 });
