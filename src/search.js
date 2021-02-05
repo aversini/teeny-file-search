@@ -154,19 +154,17 @@ class Search {
       if (this.type === STR_TYPE_DIRECTORY) {
         name = name === "" ? "." : `./${name}`;
       }
-      name = this.type === STR_TYPE_FILE ? kleur.gray(name) : kleur.blue(name);
+
       /* istanbul ignore else */
       if (node && node.match && node.shortname) {
         if (this.type === STR_TYPE_FILE) {
-          name = name.replace(
-            node.shortname,
-            node.shortname.replace(
-              node.match,
-              kleur.black().bgYellow(node.match)
-            )
+          name = kleur.gray(
+            name.replace(node.match, kleur.black().bgYellow(node.match))
           );
         } else {
-          name = name.replace(node.match, kleur.black().bgYellow(node.match));
+          name = kleur.blue(
+            name.replace(node.match, kleur.black().bgYellow(node.match))
+          );
         }
       }
       logger.log(
