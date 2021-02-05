@@ -28,3 +28,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run test:coverage
+      - name: Publish coverage
+        uses: EndBug/add-and-commit@v4
+        with:
+          add: docs
+          force: true
+          message: Add coverage reports
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
