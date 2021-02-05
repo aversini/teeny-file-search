@@ -16,6 +16,9 @@
     "bin",
     "src/*.js"
   ],
+  "engines": {
+    "node": ">=12"
+  },
   "scripts": {
     "bump": "bump-and-release -t bump",
     "changelog": "conventional-changelog -i CHANGELOG.md -s -p angular",
