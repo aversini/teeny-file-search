@@ -1,4 +1,5 @@
 /* eslint-disable no-magic-numbers */
+const path = require("path");
 const { shallowMerge } = require("teeny-js-utilities");
 const {
   // private methods
@@ -9,6 +10,7 @@ const {
   formatLongListings,
   getOwnerNameFromId,
   printStatistics,
+  runGrepOnNode,
   STR_TYPE_BOTH,
   STR_TYPE_DIRECTORY,
   STR_TYPE_FILE,
@@ -108,6 +110,22 @@ describe("when testing for individual utilities with no logging side-effects", (
     let re;
     const str = "this is some string";
     expect(checkPattern(re, str)).toBe(true);
+  });
+
+  it("should return one entry matching the pattern for package.json", async () => {
+    const file = path.join(process.cwd(), "package.json");
+    const rePattern = /name/;
+
+    const { totalMatchingLines } = await runGrepOnNode(file, rePattern);
+    expect(totalMatchingLines).toBe(1);
+  });
+
+  it("should return no entries matching the pattern for package.json", async () => {
+    const file = path.join(process.cwd(), "package.json");
+    const rePattern = /toto/;
+
+    const { totalMatchingLines } = await runGrepOnNode(file, rePattern);
+    expect(totalMatchingLines).toBe(0);
   });
 });
 
