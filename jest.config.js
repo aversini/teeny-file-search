@@ -21,7 +21,7 @@ module.exports = {
    *
    * Default undefined
    */
-  coverageDirectory: "coverage",
+  coverageDirectory: "docs/coverage",
 
   /**
    * An array of glob patterns indicating a set of files for which
