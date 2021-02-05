@@ -64,7 +64,7 @@ function convertDate(date, timeZone) {
     ...timeZone,
   })
     .format(date)
-    .replace(",", " ");
+    .replace(",", "\t");
 }
 
 const getOwnerNameFromId = async (uid) => {
