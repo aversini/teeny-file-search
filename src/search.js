@@ -62,17 +62,17 @@ class Search {
       perf.start();
     }
 
-    const { dirsList, filesList } = await this.scanFileSystem([this.path]);
-    await this.printListing(this.type === STR_TYPE_FILE ? filesList : dirsList);
+    await this.scanFileSystem([this.path]);
+    await this.prettyPrintResults();
 
     if (this.displayStats) {
       perf.stop();
       printStatistics({
         duration: perf.results.duration,
         totalDirScanned: this.totalDirScanned,
-        totalDirsFound: dirsList.length,
+        totalDirsFound: this.dirsList.length,
         totalFileScanned: this.totalFileScanned,
-        totalFilesFound: filesList.length,
+        totalFilesFound: this.filesList.length,
         type: this.type,
       });
     }
@@ -130,7 +130,8 @@ class Search {
     };
   };
 
-  printListing = async (nodes) => {
+  prettyPrintResults = async () => {
+    const nodes = this.type === STR_TYPE_FILE ? this.filesList : this.dirsList;
     logger.log();
     for (const node of nodes) {
       let l = {
