@@ -6,7 +6,7 @@ const commander = require("commander");
 const program = new commander.Command();
 const { displayErrorMessages, shallowMerge } = require("teeny-js-utilities");
 const defaults = require("../src/defaults");
-const { search } = require("../src/search");
+const { Search } = require("../src/search");
 const pkg = require(path.join(__dirname, "../package.json"));
 
 const optionParseType = (value) => {
@@ -32,6 +32,7 @@ program
   .option("--dot", "Show hidden files and directories", false)
   .option("-b, --boring", "Do not use color output", false)
   .option("-s, --stats", "Display some statistics", false)
+  .option("-i, --ignore-case", "Ignore case when searching", false)
   .helpOption("-h, --help", "Display help instructions");
 
 program.addHelpText(
@@ -62,5 +63,6 @@ if (program.args.length) {
 const config = shallowMerge(defaults, customCfg);
 
 (async () => {
-  await search(config);
+  const search = new Search(config);
+  await search.start();
 })();
