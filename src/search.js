@@ -13,6 +13,7 @@ const {
   checkPattern,
   formatLongListings,
   printStatistics,
+  runCommandOnNode,
   STR_TYPE_BOTH,
   STR_TYPE_DIRECTORY,
   STR_TYPE_FILE,
@@ -21,6 +22,7 @@ const {
 class Search {
   constructor({
     boring,
+    command,
     dot,
     foldersBlacklist,
     ignoreCase,
@@ -46,6 +48,7 @@ class Search {
     this.totalFileScanned = 0;
     this.totalDirFound = 0;
     this.totalFileFound = 0;
+    this.command = command ? command.trim() : null;
   }
 
   ignoreFolders = (dir) => {
@@ -66,7 +69,7 @@ class Search {
     }
 
     await this.scanFileSystem([this.path]);
-    await this.prettyPrintResults();
+    await this.postProcessResults();
 
     if (this.displayStats) {
       perf.stop();
@@ -97,9 +100,8 @@ class Search {
             name: strPath,
             shortname: strPath,
             stat,
+            command: this.command,
           });
-
-          // runCommand(strPath);
         }
 
         try {
@@ -124,18 +126,19 @@ class Search {
             name: strPath,
             shortname,
             stat,
+            command: this.command,
           });
-
-          // runCommand(strPath);
         }
       }
     }
   };
 
-  prettyPrintResults = async () => {
+  postProcessResults = async () => {
+    /* istanbul ignore if */
     if (!this.boring) {
       logger.log();
     }
+
     for (const node of this.nodesList) {
       if (
         (this.type === STR_TYPE_FILE && node.type === STR_TYPE_FILE) ||
@@ -171,6 +174,9 @@ class Search {
           l.mdate,
           name
         );
+        if (node.command) {
+          await runCommandOnNode(node.name, node.command);
+        }
       }
     }
   };

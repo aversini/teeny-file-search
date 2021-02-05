@@ -159,4 +159,46 @@ describe("when testing for utilities with logging side-effects", () => {
     expect(mockLog).toHaveBeenCalledWith(" src");
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
   });
+
+  it("should run a command on the file that matches the pattern", async () => {
+    const config = shallowMerge(
+      {
+        path: `${process.cwd()}`,
+        boring: true,
+        short: true,
+        stats: false,
+        pattern: "package.json",
+      },
+      defaults
+    );
+    config.command = "grep name";
+
+    const search = new Search(config);
+    await search.start();
+    expect(mockLog).toHaveBeenCalledWith(" package.json");
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("teeny-file-search")
+    );
+  });
+
+  it("should run a command on the file that matches the pattern but does not return anything", async () => {
+    const config = shallowMerge(
+      {
+        path: `${process.cwd()}`,
+        boring: true,
+        short: true,
+        stats: false,
+        pattern: "package.json",
+      },
+      defaults
+    );
+    config.command = "chmod +r";
+
+    const search = new Search(config);
+    await search.start();
+    expect(mockLog).toHaveBeenCalledWith(" package.json");
+    expect(mockLog).not.toHaveBeenCalledWith(
+      expect.stringContaining("teeny-file-search")
+    );
+  });
 });

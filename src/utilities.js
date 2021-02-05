@@ -139,6 +139,17 @@ function checkPattern(rePattern, str) {
   return true;
 }
 
+async function runCommandOnNode(node, command) {
+  try {
+    const stdout = await runCommand(`${command} ${node}`);
+    if (stdout) {
+      logger.log("==>", stdout);
+    }
+  } catch (e) {
+    // nothing to declare officer
+  }
+}
+
 module.exports = {
   convertDate,
   convertSize,
@@ -147,6 +158,7 @@ module.exports = {
   formatLongListings,
   getOwnerNameFromId,
   printStatistics,
+  runCommandOnNode,
   STR_TYPE_BOTH,
   STR_TYPE_DIRECTORY,
   STR_TYPE_FILE,

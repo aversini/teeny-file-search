@@ -31,6 +31,7 @@ describe("when testing for individual utilities with no logging side-effects", (
       hello: true,
       path: process.cwd(),
       foldersBlacklist: /node_modules/gi,
+      command: null,
     });
   });
 

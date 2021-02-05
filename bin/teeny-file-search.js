@@ -32,6 +32,10 @@ program
   .option("-b, --boring", "Do not use color output", false)
   .option("-s, --stats", "Display some statistics", false)
   .option("-i, --ignore-case", "Ignore case when searching", false)
+  .option(
+    "-c, --command <cmd>",
+    "Command to execute over each node (ex: chmod +x)"
+  )
   .helpOption("-h, --help", "Display help instructions");
 
 program.addHelpText(
