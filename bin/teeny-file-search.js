@@ -25,10 +25,9 @@ program
   .option(
     "-t, --type <string>",
     "Search for files (f) or directories (d)",
-    optionParseType,
-    "f"
+    optionParseType
   )
-  .option("-l, --long", "Long listing format (equicalent to ls -l)", false)
+  .option("--short", "Short listing format (equivalent to ls)", false)
   .option("--dot", "Show hidden files and directories", false)
   .option("-b, --boring", "Do not use color output", false)
   .option("-s, --stats", "Display some statistics", false)

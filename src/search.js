@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 const fs = require("fs");
 const kleur = require("kleur");
 const { basename, join, relative } = require("path");
@@ -12,6 +13,7 @@ const {
   checkPattern,
   formatLongListings,
   printStatistics,
+  STR_TYPE_BOTH,
   STR_TYPE_DIRECTORY,
   STR_TYPE_FILE,
 } = require("./utilities");
@@ -22,7 +24,7 @@ class Search {
     dot,
     foldersBlacklist,
     ignoreCase,
-    long,
+    short,
     path,
     pattern,
     stats,
@@ -32,17 +34,18 @@ class Search {
     this.rePattern = pattern
       ? new RegExp(pattern, ignoreCase ? "i" : "")
       : null;
-    this.type = type;
+    this.type = type || STR_TYPE_BOTH;
     this.boring = boring;
     kleur.enabled = !boring;
-    this.displayLongListing = long;
+    this.displayLongListing = !short;
     this.displayStats = stats;
     this.displayHiddenFilesAndFolders = dot;
-    this.dirsList = [];
-    this.filesList = [];
+    this.nodesList = [];
     this.foldersBlacklist = foldersBlacklist;
     this.totalDirScanned = 0;
     this.totalFileScanned = 0;
+    this.totalDirFound = 0;
+    this.totalFileFound = 0;
   }
 
   ignoreFolders = (dir) => {
@@ -70,9 +73,9 @@ class Search {
       printStatistics({
         duration: perf.results.duration,
         totalDirScanned: this.totalDirScanned,
-        totalDirsFound: this.dirsList.length,
+        totalDirsFound: this.totalDirFound,
         totalFileScanned: this.totalFileScanned,
-        totalFilesFound: this.filesList.length,
+        totalFilesFound: this.totalFileFound,
         type: this.type,
       });
     }
@@ -85,16 +88,18 @@ class Search {
 
       if (stat.isDirectory() && !this.ignoreFolders(strPath)) {
         this.totalDirScanned++;
-        if (this.type === STR_TYPE_DIRECTORY) {
-          if ((res = checkPattern(this.rePattern, strPath, this.type))) {
-            this.dirsList.push({
-              match: res,
-              name: strPath,
-              shortname: strPath,
-              stat,
-            });
-            // runCommand(strPath);
-          }
+
+        if ((res = checkPattern(this.rePattern, strPath))) {
+          this.totalDirFound++;
+          this.nodesList.push({
+            type: STR_TYPE_DIRECTORY,
+            match: res,
+            name: strPath,
+            shortname: strPath,
+            stat,
+          });
+
+          // runCommand(strPath);
         }
 
         try {
@@ -109,72 +114,66 @@ class Search {
         }
       } else if (stat.isFile()) {
         this.totalFileScanned++;
-        if (this.type === STR_TYPE_FILE) {
-          shortname = basename(strPath);
-          if ((res = checkPattern(this.rePattern, shortname, this.type))) {
-            this.filesList.push({
-              match: res[0],
-              name: strPath,
-              shortname,
-              stat,
-            });
-            // runCommand(strPath);
-          }
+
+        shortname = basename(strPath);
+        if ((res = checkPattern(this.rePattern, shortname, this.type))) {
+          this.totalFileFound++;
+          this.nodesList.push({
+            type: STR_TYPE_FILE,
+            match: res[0],
+            name: strPath,
+            shortname,
+            stat,
+          });
+
+          // runCommand(strPath);
         }
       }
     }
-
-    return {
-      dirsList: this.dirsList,
-      filesList: this.filesList,
-    };
   };
 
   prettyPrintResults = async () => {
-    const nodes = this.type === STR_TYPE_FILE ? this.filesList : this.dirsList;
     logger.log();
-    for (const node of nodes) {
-      let l = {
-          mode: "",
-          size: "",
-          owner: "",
-          group: "",
-          mdate: "",
-        },
-        name,
-        separator = "";
+    for (const node of this.nodesList) {
+      if (
+        (this.type === STR_TYPE_FILE && node.type === STR_TYPE_FILE) ||
+        (this.type === STR_TYPE_DIRECTORY &&
+          node.type === STR_TYPE_DIRECTORY) ||
+        this.type === STR_TYPE_BOTH
+      ) {
+        let l = {
+            mode: "",
+            size: "",
+            owner: "",
+            group: "",
+            mdate: "",
+          },
+          name,
+          separator = "";
 
-      /* istanbul ignore if */
-      if (this.displayLongListing) {
-        l = await formatLongListings(node.stat, this.type);
-        separator = "\t";
-      }
-      name = relative(process.cwd(), node.name);
-      /* istanbul ignore if */
-      if (this.type === STR_TYPE_DIRECTORY) {
-        name = name === "" ? "." : `./${name}`;
-      }
-
-      /* istanbul ignore else */
-      if (node && node.match && node.shortname) {
-        if (this.type === STR_TYPE_FILE) {
-          name = kleur.gray(
-            name.replace(node.match, kleur.black().bgYellow(node.match))
-          );
-        } else {
-          name = kleur.blue(
-            name.replace(node.match, kleur.black().bgYellow(node.match))
-          );
+        /* istanbul ignore if */
+        if (this.displayLongListing) {
+          l = await formatLongListings(node.stat, node.type);
+          separator = "\t";
         }
+
+        const color = node.type === STR_TYPE_FILE ? kleur.gray : kleur.blue;
+        name = relative(process.cwd(), node.name);
+        name = color(
+          name.replace(
+            new RegExp(node.match, "g"),
+            kleur.black().bgYellow(node.match)
+          )
+        );
+        logger.log(
+          ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
+          l.mode.trim(),
+          l.owner.trim(),
+          l.size.trim(),
+          l.mdate,
+          name
+        );
       }
-      logger.log(
-        ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
-        l.mode.trim(),
-        l.owner.trim(),
-        l.size.trim(),
-        l.mdate,
-        name
-      );
     }
   };
 }

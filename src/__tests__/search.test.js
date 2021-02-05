@@ -52,14 +52,14 @@ describe("when testing for utilities with logging side-effects", () => {
           pattern: "eslint$",
           type: "d",
           boring: true,
-          long: false,
+          short: true,
           stats: false,
         },
         defaults
       )
     );
     await search.start();
-    expect(mockLog).toHaveBeenCalledWith(" ./configuration/eslint");
+    expect(mockLog).toHaveBeenCalledWith(" configuration/eslint");
   });
 
   it("should find and list a specific file based on the arguments", async () => {
@@ -70,7 +70,7 @@ describe("when testing for utilities with logging side-effects", () => {
           pattern: "teeny-file-search.js",
           type: "f",
           boring: true,
-          long: false,
+          short: true,
           stats: true,
         },
         defaults
@@ -89,7 +89,7 @@ describe("when testing for utilities with logging side-effects", () => {
           pattern: "ignore",
           type: "f",
           boring: true,
-          long: false,
+          short: true,
           stats: true,
           dot: true,
         },
@@ -109,7 +109,7 @@ describe("when testing for utilities with logging side-effects", () => {
           pattern: "a",
           type: "f",
           boring: true,
-          long: false,
+          short: true,
           stats: true,
           ignoreCase: true,
         },
@@ -129,7 +129,7 @@ describe("when testing for utilities with logging side-effects", () => {
           path: `${process.cwd()}`,
           type: "f",
           boring: true,
-          long: false,
+          short: true,
           stats: true,
         },
         defaults
@@ -138,6 +138,25 @@ describe("when testing for utilities with logging side-effects", () => {
     await search.start();
     expect(mockLog).toHaveBeenCalledWith(" bin/teeny-file-search.js");
     expect(mockLog).toHaveBeenCalledWith(" package.json");
+    expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
+  });
+
+  it("should list files and folders when there is no type provided", async () => {
+    const search = new Search(
+      shallowMerge(
+        {
+          path: `${process.cwd()}`,
+          boring: true,
+          short: true,
+          stats: true,
+        },
+        defaults
+      )
+    );
+    await search.start();
+    expect(mockLog).toHaveBeenCalledWith(" bin/teeny-file-search.js");
+    expect(mockLog).toHaveBeenCalledWith(" package.json");
+    expect(mockLog).toHaveBeenCalledWith(" src");
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
   });
 });

@@ -15,6 +15,7 @@ const MODE_WORD_POS = 2;
 const OCTAL = 8;
 const STR_TYPE_DIRECTORY = "d";
 const STR_TYPE_FILE = "f";
+const STR_TYPE_BOTH = "both";
 
 const ownerNames = {
   0: "root",
@@ -104,10 +105,21 @@ const printStatistics = ({
 }) => {
   let msg = `Total folders scanned: ${yellow(totalDirScanned)}\n`;
   msg += `Total files scanned: ${yellow(totalFileScanned)}\n`;
-  msg +=
-    type === STR_TYPE_DIRECTORY
-      ? `Total folders matching: ${green(totalDirsFound)}\n`
-      : `Total files matching: ${green(totalFilesFound)}\n`;
+  switch (type) {
+    case STR_TYPE_DIRECTORY:
+      msg += `Total folders matching: ${green(totalDirsFound)}\n`;
+      break;
+
+    case STR_TYPE_FILE:
+      msg += `Total files matching: ${green(totalFilesFound)}\n`;
+      break;
+
+    default:
+      msg += `Total folders matching: ${green(totalDirsFound)}\n`;
+      msg += `Total files matching: ${green(totalFilesFound)}\n`;
+      break;
+  }
+
   msg += `Duration: ${yellow(`${duration}ms`)}`;
   logger.log();
   logger.log(
@@ -135,6 +147,7 @@ module.exports = {
   formatLongListings,
   getOwnerNameFromId,
   printStatistics,
+  STR_TYPE_BOTH,
   STR_TYPE_DIRECTORY,
   STR_TYPE_FILE,
 };

@@ -9,6 +9,9 @@ const {
   formatLongListings,
   getOwnerNameFromId,
   printStatistics,
+  STR_TYPE_BOTH,
+  STR_TYPE_DIRECTORY,
+  STR_TYPE_FILE,
 } = require("../utilities");
 
 const defaults = require("../defaults");
@@ -141,7 +144,7 @@ describe("when testing for utilities with logging side-effects", () => {
       totalDirsFound: 111,
       totalFileScanned: 44,
       totalFilesFound: 33,
-      type: "f",
+      type: STR_TYPE_FILE,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -168,7 +171,7 @@ describe("when testing for utilities with logging side-effects", () => {
       totalDirsFound: 111,
       totalFileScanned: 44,
       totalFilesFound: 33,
-      type: "d",
+      type: STR_TYPE_DIRECTORY,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -178,6 +181,33 @@ describe("when testing for utilities with logging side-effects", () => {
       expect.stringContaining("Total files scanned: 44")
     );
     expect(mockLog).not.toHaveBeenCalledWith(
+      expect.stringContaining("Total files matching: 33")
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total folders matching: 111")
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Duration: 42ms")
+    );
+  });
+
+  it("should print statistics for files AND folders scans in a nice little box", async () => {
+    printStatistics({
+      duration: 42,
+      totalDirScanned: 222,
+      totalDirsFound: 111,
+      totalFileScanned: 44,
+      totalFilesFound: 33,
+      type: STR_TYPE_BOTH,
+    });
+
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total folders scanned: 222")
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total files scanned: 44")
+    );
+    expect(mockLog).toHaveBeenCalledWith(
       expect.stringContaining("Total files matching: 33")
     );
     expect(mockLog).toHaveBeenCalledWith(
