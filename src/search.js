@@ -133,7 +133,9 @@ class Search {
   };
 
   prettyPrintResults = async () => {
-    logger.log();
+    if (!this.boring) {
+      logger.log();
+    }
     for (const node of this.nodesList) {
       if (
         (this.type === STR_TYPE_FILE && node.type === STR_TYPE_FILE) ||
@@ -159,12 +161,8 @@ class Search {
 
         const color = node.type === STR_TYPE_FILE ? kleur.gray : kleur.blue;
         name = relative(process.cwd(), node.name);
-        name = color(
-          name.replace(
-            new RegExp(node.match, "g"),
-            kleur.black().bgYellow(node.match)
-          )
-        );
+        const match = node.match ? new RegExp(node.match, "g") : node.match;
+        name = color(name.replace(match, kleur.black().bgYellow(node.match)));
         logger.log(
           ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
           l.mode.trim(),
