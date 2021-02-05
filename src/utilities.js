@@ -61,7 +61,9 @@ function convertDate(date, timeZone) {
     minute: "2-digit",
     hour12: false,
     ...timeZone,
-  }).format(date);
+  })
+    .format(date)
+    .replace(",", " ");
 }
 
 const getOwnerNameFromId = async (uid) => {

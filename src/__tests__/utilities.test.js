@@ -46,7 +46,7 @@ describe("when testing for individual utilities with no logging side-effects", (
   it("should convert a timestamp into a human readable string", async () => {
     const someDate = 1612459361926;
     expect(convertDate(someDate, { timeZone: "UTC" })).toStrictEqual(
-      "Feb 4, 17:22"
+      "Feb 4  17:22"
     );
   });
 
