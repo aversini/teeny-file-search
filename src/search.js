@@ -194,17 +194,21 @@ class Search {
             );
             logger.log(`${results.join("\n")}\n`);
           }
-        } /* istanbul ignore else */ else if (!this.grep) {
-          logger.log(
-            ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
-            l.mode.trim(),
-            l.owner.trim(),
-            l.size.trim(),
-            l.mdate,
-            name
-          );
-          if (node.command) {
-            await runCommandOnNode(node.name, node.command);
+        } else {
+          /* istanbul ignore next */
+          // eslint-disable-next-line no-lonely-if
+          if (!this.grep) {
+            logger.log(
+              ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
+              l.mode.trim(),
+              l.owner.trim(),
+              l.size.trim(),
+              l.mdate,
+              name
+            );
+            if (node.command) {
+              await runCommandOnNode(node.name, node.command);
+            }
           }
         }
       }
