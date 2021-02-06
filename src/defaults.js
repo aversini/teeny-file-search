@@ -1,6 +1,6 @@
 module.exports = {
-  path: process.cwd(),
-  foldersBlacklist: /node_modules/gi,
   command: null,
+  foldersBlacklist: /node_modules/gi,
   grep: null,
+  path: process.cwd(),
 };

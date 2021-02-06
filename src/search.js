@@ -89,12 +89,12 @@ class Search {
       perf.stop();
       printStatistics({
         duration: perf.results.duration,
+        pattern: this.rePattern,
         totalDirScanned: this.totalDirScanned,
         totalDirsFound: this.totalDirFound,
         totalFileScanned: this.totalFileScanned,
         totalFilesFound: this.totalFileFound,
         type: this.type,
-        pattern: this.rePattern,
       });
     }
   };
@@ -114,11 +114,11 @@ class Search {
         if ((res = checkPattern(this.rePattern, node))) {
           this.totalDirFound++;
           this.nodesList.push({
-            type: STR_TYPE_DIRECTORY,
+            command: this.command,
             match: res,
             name: node,
             stat,
-            command: this.command,
+            type: STR_TYPE_DIRECTORY,
           });
         }
 
@@ -139,11 +139,11 @@ class Search {
         if ((res = checkPattern(this.rePattern, shortname, this.type))) {
           this.totalFileFound++;
           this.nodesList.push({
-            type: STR_TYPE_FILE,
+            command: this.command,
             match: res[0],
             name: node,
             stat,
-            command: this.command,
+            type: STR_TYPE_FILE,
           });
         }
       }
@@ -164,11 +164,11 @@ class Search {
         this.type === STR_TYPE_BOTH
       ) {
         let l = {
-            mode: "",
-            size: "",
-            owner: "",
             group: "",
             mdate: "",
+            mode: "",
+            owner: "",
+            size: "",
           },
           name,
           separator = "";

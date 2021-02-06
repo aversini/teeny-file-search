@@ -20,12 +20,27 @@ const STR_TYPE_DIRECTORY = "d";
 const STR_TYPE_FILE = "f";
 const STR_TYPE_BOTH = "both";
 const PERMISSIONS_PREFIX = {
-  [STR_TYPE_FILE]: "-",
   [STR_TYPE_DIRECTORY]: "d",
+  [STR_TYPE_FILE]: "-",
 };
 
 const ownerNames = {
   0: "root",
+};
+
+const MONTHS = {
+  0: "Jan",
+  1: "Feb",
+  2: "Mar",
+  3: "Apr",
+  4: "May",
+  5: "Jun",
+  6: "Jul",
+  7: "Aug",
+  8: "Sep",
+  9: "Oct",
+  10: "Nov",
+  11: "Dec",
 };
 
 function extractMode(mode) {
@@ -61,20 +76,6 @@ function convertSize(bytes) {
   return new Array(len + 1 - str.length).join(" ") + str;
 }
 
-const MONTHS = {
-  0: "Jan",
-  1: "Feb",
-  2: "Mar",
-  3: "Apr",
-  4: "May",
-  5: "Jun",
-  6: "Jul",
-  7: "Aug",
-  8: "Sep",
-  9: "Oct",
-  10: "Nov",
-  11: "Dec",
-};
 function convertDate(mtime) {
   const month = MONTHS[mtime.getMonth()];
   /* eslint-disable no-magic-numbers */
@@ -105,13 +106,13 @@ const getOwnerNameFromId = async (uid) => {
 };
 
 const formatLongListings = async (stat, type) => ({
-  mode: PERMISSIONS_PREFIX[type] + extractMode(stat.mode),
-  size: `${convertSize(stat.size)}`,
-
   mdate: `${convertDate(stat.mtime)}`,
-  // mdate: "aaa",
+  mode: PERMISSIONS_PREFIX[type] + extractMode(stat.mode),
 
+  // mdate: "aaa",
   owner: `${await getOwnerNameFromId(stat.uid)}`,
+
+  size: `${convertSize(stat.size)}`,
 });
 const printStatistics = ({
   duration,
@@ -145,9 +146,9 @@ const printStatistics = ({
   logger.log();
   logger.log(
     boxen(msg, {
-      padding: 1,
       align: "center",
       borderColor: "yellow",
+      padding: 1,
     })
   );
 };
@@ -197,8 +198,8 @@ async function runGrepOnNode(node, rePattern) {
       lines.push("");
     });
     return {
-      totalMatchingLines,
       results: lines.length ? lines : [],
+      totalMatchingLines,
     };
   } catch (e) {
     /* istanbul ignore next */
@@ -207,16 +208,16 @@ async function runGrepOnNode(node, rePattern) {
 }
 
 module.exports = {
+  STR_TYPE_BOTH,
+  STR_TYPE_DIRECTORY,
+  STR_TYPE_FILE,
+  checkPattern,
   convertDate,
   convertSize,
-  checkPattern,
   extractMode,
   formatLongListings,
   getOwnerNameFromId,
   printStatistics,
   runCommandOnNode,
   runGrepOnNode,
-  STR_TYPE_BOTH,
-  STR_TYPE_DIRECTORY,
-  STR_TYPE_FILE,
 };
