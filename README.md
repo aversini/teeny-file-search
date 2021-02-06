@@ -45,13 +45,13 @@ Options:
 Path: the path where to search for files or directories (default: current folder)
 ```
 
-**Find all the files that ends with the extension ".jsx" in the `src` folder**
+**Find files with the extension ".jsx" in the `src` folder**
 
 ```sh
 > teeny-file-search --type f --pattern ".jsx$" src
 ```
 
-**Find all the folders which name or path includes \_\_tests\_\_ in the `src` folder**
+**Find folders which name or path includes \_\_tests\_\_ in the `src` folder**
 
 ```sh
 > teeny-file-search --type d --pattern "__tests__" src
@@ -61,6 +61,12 @@ Path: the path where to search for files or directories (default: current folder
 
 ```sh
 > teeny-file-search --type f --command "chmod +x"
+```
+
+**Change the permissions to executable for all the files with extension ".sh" found under the `bin` folder**
+
+```sh
+> teeny-file-search --type f --pattern=".sh$" --command "chmod +x"
 ```
 
 **Search in all the markdown files under the `src` folder for the keywords "Table of Content"**
