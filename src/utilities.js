@@ -19,6 +19,10 @@ const OCTAL = 8;
 const STR_TYPE_DIRECTORY = "d";
 const STR_TYPE_FILE = "f";
 const STR_TYPE_BOTH = "both";
+const PERMISSIONS_PREFIX = {
+  [STR_TYPE_FILE]: "-",
+  [STR_TYPE_DIRECTORY]: "d",
+};
 
 const ownerNames = {
   0: "root",
@@ -57,17 +61,29 @@ function convertSize(bytes) {
   return new Array(len + 1 - str.length).join(" ") + str;
 }
 
-function convertDate(date, timeZone) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-    ...timeZone,
-  })
-    .format(date)
-    .replace(",", "\t");
+const MONTHS = {
+  0: "Jan",
+  1: "Feb",
+  2: "Mar",
+  3: "Apr",
+  4: "May",
+  5: "Jun",
+  6: "Jul",
+  7: "Aug",
+  8: "Sep",
+  9: "Oct",
+  10: "Nov",
+  11: "Dec",
+};
+function convertDate(mtime) {
+  const month = MONTHS[mtime.getMonth()];
+  /* eslint-disable no-magic-numbers */
+  const date = `${mtime.getDate()}`.padStart(2, "0");
+  const hours = `${mtime.getHours()}`.padStart(2, "0");
+  const minutes = `${mtime.getMinutes()}`.padStart(2, "0");
+  /* eslint-enable */
+
+  return `${month} ${date}  ${hours}:${minutes}`;
 }
 
 const getOwnerNameFromId = async (uid) => {
@@ -88,16 +104,15 @@ const getOwnerNameFromId = async (uid) => {
   }
 };
 
-const formatLongListings = async (stat, type) => {
-  const delim = type === STR_TYPE_FILE ? "-" : "d";
-  return {
-    mode: delim + extractMode(stat.mode),
-    size: `${convertSize(stat.size)}`,
-    mdate: `${convertDate(stat.mtime)}`,
-    owner: `${await getOwnerNameFromId(stat.uid)}`,
-  };
-};
+const formatLongListings = async (stat, type) => ({
+  mode: PERMISSIONS_PREFIX[type] + extractMode(stat.mode),
+  size: `${convertSize(stat.size)}`,
 
+  mdate: `${convertDate(stat.mtime)}`,
+  // mdate: "aaa",
+
+  owner: `${await getOwnerNameFromId(stat.uid)}`,
+});
 const printStatistics = ({
   duration,
   totalDirScanned,
