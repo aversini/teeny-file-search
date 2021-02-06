@@ -3,11 +3,17 @@
 const path = require("path");
 const fs = require("fs-extra");
 const commander = require("commander");
-const program = new commander.Command();
 const { displayErrorMessages, shallowMerge } = require("teeny-js-utilities");
+const PrettyError = require("pretty-error");
+
 const defaults = require("../src/defaults");
 const { Search } = require("../src/search");
 const pkg = require(path.join(__dirname, "../package.json"));
+
+const program = new commander.Command();
+const pe = new PrettyError();
+// Automatically prettifying all exceptions that are logged
+pe.start();
 
 const optionParseType = (value) => {
   if (value !== "f" && value !== "d") {
