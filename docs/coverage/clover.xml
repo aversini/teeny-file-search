@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1612569612202" clover="3.2.0">
-  <project timestamp="1612569612202" name="All files">
-    <metrics statements="161" coveredstatements="161" conditionals="64" coveredconditionals="63" methods="17" coveredmethods="17" elements="242" coveredelements="241" complexity="0" loc="161" ncloc="161" packages="1" files="3" classes="3"/>
+<coverage generated="1612570239557" clover="3.2.0">
+  <project timestamp="1612570239557" name="All files">
+    <metrics statements="157" coveredstatements="157" conditionals="61" coveredconditionals="60" methods="17" coveredmethods="17" elements="235" coveredelements="234" complexity="0" loc="157" ncloc="157" packages="1" files="3" classes="3"/>
     <file name="defaults.js" path="/home/runner/work/teeny-file-search/teeny-file-search/src/defaults.js">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <line num="1" count="2" type="stmt"/>
     </file>
     <file name="search.js" path="/home/runner/work/teeny-file-search/teeny-file-search/src/search.js">
-      <metrics statements="83" coveredstatements="83" conditionals="48" coveredconditionals="47" methods="7" coveredmethods="7"/>
+      <metrics statements="79" coveredstatements="79" conditionals="45" coveredconditionals="44" methods="7" coveredmethods="7"/>
       <line num="2" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
       <line num="4" count="1" type="stmt"/>
@@ -86,11 +86,7 @@
       <line num="185" count="3" type="stmt"/>
       <line num="186" count="3" type="stmt"/>
       <line num="195" count="3" type="stmt"/>
-      <line num="197" count="157" type="cond" truecount="1" falsecount="0"/>
-      <line num="198" count="157" type="stmt"/>
-      <line num="206" count="157" type="cond" truecount="2" falsecount="0"/>
-      <line num="207" count="2" type="stmt"/>
-      <line num="215" count="1" type="stmt"/>
+      <line num="219" count="1" type="stmt"/>
     </file>
     <file name="utilities.js" path="/home/runner/work/teeny-file-search/teeny-file-search/src/utilities.js">
       <metrics statements="77" coveredstatements="77" conditionals="16" coveredconditionals="16" methods="10" coveredmethods="10"/>
