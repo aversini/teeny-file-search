@@ -51,8 +51,8 @@ describe("when testing for individual utilities with no logging side-effects", (
   });
 
   it("should convert a timestamp into a human readable string", async () => {
-    const someDate = new Date(1612459361926);
-    expect(convertDate(someDate)).toStrictEqual("Feb 04  09:22");
+    const someDate = new Date("Jul 4 2020 11:22:00 EST");
+    expect(convertDate(someDate)).toStrictEqual("Jul 04  09:22");
   });
 
   it("should get the owner name based on the id", async () => {
@@ -65,7 +65,7 @@ describe("when testing for individual utilities with no logging side-effects", (
         {
           mode: 33188,
           size: 1024 * 1000,
-          mtime: new Date(1612459361926),
+          mtime: new Date("Jul 4 2020 11:22:00 EST"),
           uid: 0,
         },
         "f"
@@ -83,7 +83,7 @@ describe("when testing for individual utilities with no logging side-effects", (
         {
           mode: 33188,
           size: 1024 * 1000,
-          mtime: new Date(1612459361926),
+          mtime: new Date("Jul 4 2020 11:22:00 EST"),
           uid: 0,
         },
         "d"
