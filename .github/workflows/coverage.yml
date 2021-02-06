@@ -28,11 +28,19 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run test:coverage
-      - name: Publish coverage
-        uses: EndBug/add-and-commit@v4
-        with:
-          add: docs
-          force: true
-          message: Add coverage reports
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # The following can be re-enabled to publish coverage reports
+      # to the docs folder, and therefore availabe via GH pages.
+      # PS: for this to work, you also need to update jest.config.js
+      # and replace
+      #   coverageDirectory: "coverage",
+      # with
+      #   coverageDirectory: "docs/coverage",
+      #
+      # - name: Publish coverage
+      #   uses: EndBug/add-and-commit@v4
+      #   with:
+      #     add: docs
+      #     force: true
+      #     message: Add coverage reports
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
