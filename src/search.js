@@ -95,10 +95,14 @@ class Search {
 
   scanFileSystem = async (dirs) => {
     for (const strPath of dirs) {
-      let res, files, shortname;
-      const stat = fs.lstatSync(strPath);
+      let res, files, shortname, stat;
+      try {
+        stat = fs.lstatSync(strPath);
+      } catch (e) {
+        // ignore read permission denied errors silently...
+      }
 
-      if (stat.isDirectory() && !this.ignoreFolders(strPath)) {
+      if (stat && stat.isDirectory() && !this.ignoreFolders(strPath)) {
         this.totalDirScanned++;
 
         if ((res = checkPattern(this.rePattern, strPath))) {
@@ -123,7 +127,7 @@ class Search {
         } catch (e) {
           // nothing to declare
         }
-      } else if (stat.isFile()) {
+      } else if (stat && stat.isFile()) {
         this.totalFileScanned++;
 
         shortname = basename(strPath);

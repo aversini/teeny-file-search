@@ -1,6 +1,7 @@
 const boxen = require("boxen");
 const { green, yellow } = require("kleur");
 const fs = require("fs");
+const prettyMilliseconds = require("pretty-ms");
 const { runCommand } = require("teeny-js-utilities");
 const TeenyLogger = require("teeny-logger");
 const kleur = require("kleur");
@@ -122,7 +123,7 @@ const printStatistics = ({
       break;
   }
 
-  msg += `Duration: ${yellow(`${duration}ms`)}`;
+  msg += `Duration: ${yellow(`${prettyMilliseconds(duration)}`)}`;
   logger.log();
   logger.log(
     boxen(msg, {
