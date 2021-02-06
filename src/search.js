@@ -89,6 +89,7 @@ class Search {
         totalFileScanned: this.totalFileScanned,
         totalFilesFound: this.totalFileFound,
         type: this.type,
+        pattern: this.rePattern,
       });
     }
   };

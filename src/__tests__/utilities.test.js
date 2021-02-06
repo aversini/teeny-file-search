@@ -165,6 +165,7 @@ describe("when testing for utilities with logging side-effects", () => {
       totalFileScanned: 44,
       totalFilesFound: 33,
       type: STR_TYPE_FILE,
+      pattern: true,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -192,6 +193,7 @@ describe("when testing for utilities with logging side-effects", () => {
       totalFileScanned: 44,
       totalFilesFound: 33,
       type: STR_TYPE_DIRECTORY,
+      pattern: true,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -219,6 +221,7 @@ describe("when testing for utilities with logging side-effects", () => {
       totalFileScanned: 44,
       totalFilesFound: 33,
       type: STR_TYPE_BOTH,
+      pattern: true,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -231,6 +234,34 @@ describe("when testing for utilities with logging side-effects", () => {
       expect.stringContaining("Total files matching: 33")
     );
     expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total folders matching: 111")
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Duration: 42ms")
+    );
+  });
+
+  it("should print statistics for files AND folders scans in a nice little box, but with no pattern results", async () => {
+    printStatistics({
+      duration: 42,
+      totalDirScanned: 222,
+      totalDirsFound: 111,
+      totalFileScanned: 44,
+      totalFilesFound: 33,
+      type: STR_TYPE_BOTH,
+      pattern: false,
+    });
+
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total folders scanned: 222")
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total files scanned: 44")
+    );
+    expect(mockLog).not.toHaveBeenCalledWith(
+      expect.stringContaining("Total files matching: 33")
+    );
+    expect(mockLog).not.toHaveBeenCalledWith(
       expect.stringContaining("Total folders matching: 111")
     );
     expect(mockLog).toHaveBeenCalledWith(

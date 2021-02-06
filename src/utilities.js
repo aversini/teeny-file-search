@@ -105,6 +105,7 @@ const printStatistics = ({
   totalFileScanned,
   totalFilesFound,
   type,
+  pattern,
 }) => {
   let msg = `Total folders scanned: ${yellow(totalDirScanned)}\n`;
   msg += `Total files scanned: ${yellow(totalFileScanned)}\n`;
@@ -118,8 +119,10 @@ const printStatistics = ({
       break;
 
     default:
-      msg += `Total folders matching: ${green(totalDirsFound)}\n`;
-      msg += `Total files matching: ${green(totalFilesFound)}\n`;
+      if (pattern) {
+        msg += `Total folders matching: ${green(totalDirsFound)}\n`;
+        msg += `Total files matching: ${green(totalFilesFound)}\n`;
+      }
       break;
   }
 
