@@ -28,7 +28,7 @@
     "prettier:fix": "prettier --loglevel error --write \"{src/**/*.js,bin/**/*.js}\"",
     "prettier:all": "npm-run-all --serial prettier:fix lint:fix",
     "release": "bump-and-release -t release",
-    "test": "cross-env NODE_ENV=\"test\" jest",
+    "test": "cross-env NODE_ENV=\"test\" TZ=UTC jest",
     "test:coverage": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch"
   },

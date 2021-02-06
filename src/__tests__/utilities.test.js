@@ -51,7 +51,7 @@ describe("when testing for individual utilities with no logging side-effects", (
   });
 
   it("should convert a timestamp into a human readable string", async () => {
-    const someDate = new Date("Jul 4 2020 11:22:00 EST");
+    const someDate = new Date("Jul 4 2020 1:22:00 PST");
     expect(convertDate(someDate)).toStrictEqual("Jul 04  09:22");
   });
 
