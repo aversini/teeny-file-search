@@ -5,6 +5,10 @@ const { basename, join, relative } = require("path");
 const plur = require("plur");
 const { Performance } = require("teeny-js-utilities");
 const TeenyLogger = require("teeny-logger");
+const { promisify } = require("util");
+
+const lstatAsync = promisify(fs.lstat);
+const readdirAsync = promisify(fs.readdir);
 const logger = new TeenyLogger({
   boring: process.env.NODE_ENV === "test",
 });
@@ -98,7 +102,7 @@ class Search {
     for (const strPath of dirs) {
       let res, files, shortname, stat;
       try {
-        stat = fs.lstatSync(strPath);
+        stat = await lstatAsync(strPath);
       } catch (e) {
         // ignore read permission denied errors silently...
       }
@@ -119,8 +123,8 @@ class Search {
         }
 
         try {
-          files = fs.readdirSync(strPath);
-          this.scanFileSystem(
+          files = await readdirAsync(strPath);
+          await this.scanFileSystem(
             files.filter(this.filterHidden).map(function (file) {
               return join(strPath, file);
             })
