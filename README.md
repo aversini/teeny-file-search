@@ -13,7 +13,6 @@
 ## Installation
 
 ```sh
-> cd your-project
 > npm install --global teeny-file-search
 ```
 
