@@ -116,7 +116,6 @@ class Search {
             type: STR_TYPE_DIRECTORY,
             match: res,
             name: strPath,
-            shortname: strPath,
             stat,
             command: this.command,
           });
@@ -142,7 +141,6 @@ class Search {
             type: STR_TYPE_FILE,
             match: res[0],
             name: strPath,
-            shortname,
             stat,
             command: this.command,
           });
