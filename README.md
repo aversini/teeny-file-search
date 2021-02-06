@@ -5,7 +5,10 @@
 ![David](https://img.shields.io/david/dev/aversini/teeny-file-search?logo=npm)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aversini/teeny-file-search/coverage?label=coverage&logo=github)
 
-> Teeny File Search is a command line script to find files or directory that match a certain pattern.
+> Teeny File Search is a command line tool that can:
+>
+> - find files or folders that match a certain pattern
+> - look for string within those files and display them (think find and grep)
 
 ## Installation
 
