@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1612570239557" clover="3.2.0">
-  <project timestamp="1612570239557" name="All files">
+<coverage generated="1612570410629" clover="3.2.0">
+  <project timestamp="1612570410629" name="All files">
     <metrics statements="157" coveredstatements="157" conditionals="61" coveredconditionals="60" methods="17" coveredmethods="17" elements="235" coveredelements="234" complexity="0" loc="157" ncloc="157" packages="1" files="3" classes="3"/>
     <file name="defaults.js" path="/home/runner/work/teeny-file-search/teeny-file-search/src/defaults.js">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -37,11 +37,11 @@
       <line num="58" count="1" type="stmt"/>
       <line num="59" count="1" type="stmt"/>
       <line num="63" count="11" type="stmt"/>
-      <line num="64" count="312" type="stmt"/>
-      <line num="65" count="312" type="stmt"/>
+      <line num="64" count="311" type="stmt"/>
+      <line num="65" count="311" type="stmt"/>
       <line num="68" count="11" type="stmt"/>
-      <line num="69" count="1058" type="cond" truecount="2" falsecount="0"/>
-      <line num="70" count="278" type="stmt"/>
+      <line num="69" count="1057" type="cond" truecount="2" falsecount="0"/>
+      <line num="70" count="277" type="stmt"/>
       <line num="72" count="780" type="stmt"/>
       <line num="75" count="11" type="stmt"/>
       <line num="76" count="11" type="cond" truecount="2" falsecount="0"/>
@@ -52,17 +52,17 @@
       <line num="84" count="5" type="stmt"/>
       <line num="85" count="5" type="stmt"/>
       <line num="96" count="11" type="stmt"/>
-      <line num="97" count="312" type="stmt"/>
-      <line num="99" count="949" type="stmt"/>
-      <line num="101" count="949" type="cond" truecount="4" falsecount="0"/>
-      <line num="102" count="301" type="stmt"/>
-      <line num="104" count="301" type="cond" truecount="2" falsecount="0"/>
+      <line num="97" count="311" type="stmt"/>
+      <line num="99" count="948" type="stmt"/>
+      <line num="101" count="948" type="cond" truecount="4" falsecount="0"/>
+      <line num="102" count="300" type="stmt"/>
+      <line num="104" count="300" type="cond" truecount="2" falsecount="0"/>
       <line num="105" count="58" type="stmt"/>
       <line num="106" count="58" type="stmt"/>
-      <line num="116" count="301" type="stmt"/>
-      <line num="117" count="301" type="stmt"/>
-      <line num="118" count="301" type="stmt"/>
-      <line num="120" count="938" type="stmt"/>
+      <line num="116" count="300" type="stmt"/>
+      <line num="117" count="300" type="stmt"/>
+      <line num="118" count="300" type="stmt"/>
+      <line num="120" count="937" type="stmt"/>
       <line num="126" count="648" type="cond" truecount="2" falsecount="0"/>
       <line num="127" count="637" type="stmt"/>
       <line num="129" count="637" type="stmt"/>
@@ -143,9 +143,9 @@
       <line num="125" count="8" type="stmt"/>
       <line num="126" count="8" type="stmt"/>
       <line num="127" count="8" type="stmt"/>
-      <line num="137" count="940" type="cond" truecount="2" falsecount="0"/>
-      <line num="138" count="807" type="stmt"/>
-      <line num="139" count="807" type="stmt"/>
+      <line num="137" count="939" type="cond" truecount="2" falsecount="0"/>
+      <line num="138" count="806" type="stmt"/>
+      <line num="139" count="806" type="stmt"/>
       <line num="141" count="133" type="stmt"/>
       <line num="145" count="2" type="stmt"/>
       <line num="146" count="2" type="stmt"/>
@@ -156,9 +156,9 @@
       <line num="158" count="5" type="stmt"/>
       <line num="159" count="5" type="stmt"/>
       <line num="162" count="5" type="stmt"/>
-      <line num="164" count="252" type="stmt"/>
-      <line num="165" count="252" type="cond" truecount="2" falsecount="0"/>
-      <line num="166" count="247" type="stmt"/>
+      <line num="164" count="255" type="stmt"/>
+      <line num="165" count="255" type="cond" truecount="2" falsecount="0"/>
+      <line num="166" count="250" type="stmt"/>
       <line num="168" count="5" type="stmt"/>
       <line num="169" count="5" type="cond" truecount="2" falsecount="0"/>
       <line num="170" count="3" type="stmt"/>
