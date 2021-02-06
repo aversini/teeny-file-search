@@ -181,6 +181,7 @@ class Search {
             node.name,
             this.grep
           );
+          /* istanbul ignore else */
           if (totalMatchingLines) {
             const occurrences = plur("occurrence", totalMatchingLines);
             logger.log(
