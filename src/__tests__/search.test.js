@@ -230,6 +230,7 @@ describe("when testing for utilities with logging side-effects", () => {
         boring: true,
         short: true,
         stats: false,
+        ignoreCase: true,
         pattern: "package.json",
       },
       defaults

@@ -49,6 +49,7 @@ class Search {
     this.displayLongListing = !short;
     this.displayStats = stats;
     this.displayHiddenFilesAndFolders = dot;
+    this.depth = 2;
     this.nodesList = [];
     this.foldersBlacklist = foldersBlacklist;
     this.totalDirScanned = 0;
@@ -57,7 +58,7 @@ class Search {
     this.totalFileFound = 0;
     this.command = command ? command.trim() : null;
     try {
-      this.grep = grep ? new RegExp(grep, "g") : null;
+      this.grep = grep ? new RegExp(grep, ignoreCase ? "gi" : "g") : null;
     } catch (e) {
       logger.error(e);
       process.exit(1);
@@ -98,34 +99,34 @@ class Search {
     }
   };
 
-  scanFileSystem = async (dirs) => {
-    for (const strPath of dirs) {
+  scanFileSystem = async (nodes) => {
+    for (const node of nodes) {
       let res, files, shortname, stat;
       try {
-        stat = await lstatAsync(strPath);
+        stat = await lstatAsync(node);
       } catch (e) {
         // ignore read permission denied errors silently...
       }
 
-      if (stat && stat.isDirectory() && !this.ignoreFolders(strPath)) {
+      if (stat && stat.isDirectory() && !this.ignoreFolders(node)) {
         this.totalDirScanned++;
 
-        if ((res = checkPattern(this.rePattern, strPath))) {
+        if ((res = checkPattern(this.rePattern, node))) {
           this.totalDirFound++;
           this.nodesList.push({
             type: STR_TYPE_DIRECTORY,
             match: res,
-            name: strPath,
+            name: node,
             stat,
             command: this.command,
           });
         }
 
         try {
-          files = await readdirAsync(strPath);
+          files = await readdirAsync(node);
           await this.scanFileSystem(
             files.filter(this.filterHidden).map(function (file) {
-              return join(strPath, file);
+              return join(node, file);
             })
           );
         } catch (e) {
@@ -134,13 +135,13 @@ class Search {
       } else if (stat && stat.isFile()) {
         this.totalFileScanned++;
 
-        shortname = basename(strPath);
+        shortname = basename(node);
         if ((res = checkPattern(this.rePattern, shortname, this.type))) {
           this.totalFileFound++;
           this.nodesList.push({
             type: STR_TYPE_FILE,
             match: res[0],
-            name: strPath,
+            name: node,
             stat,
             command: this.command,
           });
