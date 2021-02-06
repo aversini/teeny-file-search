@@ -157,7 +157,6 @@ async function runGrepOnNode(node, rePattern) {
     const lines = [];
     let totalMatchingLines = 0;
     const buffer = fs.readFileSync(node, "utf8").split("\n");
-    // console.log("==> buffer: ", buffer);
 
     buffer.forEach(function (line, lineNumber) {
       let res;
