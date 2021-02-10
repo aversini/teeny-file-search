@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const { blue, grey } = require("kleur");
 const path = require("path");
 const fs = require("fs-extra");
 const commander = require("commander");
@@ -64,7 +65,24 @@ program
 
 program.addHelpText(
   "after",
-  `\nPath: the path where to search for files or directories (default: current folder)`
+  `\nPath: the path where to search for files or directories (default: current folder)
+
+Examples:
+  ${grey('## Find files with the extension ".jsx" in the "src" folder')}
+  ${blue('> teeny-file-search --type f --pattern ".jsx$" src')}
+
+  ${grey(
+    '## Change the permissions to executable for all the files with extension ".sh" found under the "bin" folder'
+  )}
+  ${blue('> teeny-file-search --type f --pattern=".sh$" --command "chmod +x"')}
+
+  ${grey(
+    'Search in all the markdown files under the `src` folder for the keywords "Table of Content"'
+  )}
+  ${blue(
+    '> teeny-file-search -type f --pattern ".md$" --grep "Table of Content"'
+  )}
+  `
 );
 
 program.configureHelp({
