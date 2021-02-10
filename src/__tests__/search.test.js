@@ -48,12 +48,12 @@ describe("when testing for utilities with logging side-effects", () => {
     const search = new Search(
       shallowMerge(
         {
+          boring: true,
           path: `${process.cwd()}`,
           pattern: "eslint$",
-          type: "d",
-          boring: true,
           short: true,
           stats: false,
+          type: "d",
         },
         defaults
       )
@@ -66,18 +66,18 @@ describe("when testing for utilities with logging side-effects", () => {
     const search = new Search(
       shallowMerge(
         {
-          path: `${process.cwd()}`,
-          pattern: "teeny-file-search.js",
-          type: "f",
           boring: true,
+          path: `${process.cwd()}`,
+          pattern: "cli.js",
           short: true,
           stats: true,
+          type: "f",
         },
         defaults
       )
     );
     await search.start();
-    expect(mockLog).toHaveBeenCalledWith(" bin/teeny-file-search.js");
+    expect(mockLog).toHaveBeenCalledWith(" bin/cli.js");
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
   });
 
@@ -85,13 +85,13 @@ describe("when testing for utilities with logging side-effects", () => {
     const search = new Search(
       shallowMerge(
         {
+          boring: true,
+          dot: true,
           path: `${process.cwd()}`,
           pattern: "ignore",
-          type: "f",
-          boring: true,
           short: true,
           stats: true,
-          dot: true,
+          type: "f",
         },
         defaults
       )
@@ -105,13 +105,13 @@ describe("when testing for utilities with logging side-effects", () => {
     const search = new Search(
       shallowMerge(
         {
+          boring: true,
+          ignoreCase: true,
           path: `${process.cwd()}`,
           pattern: "a",
-          type: "f",
-          boring: true,
           short: true,
           stats: true,
-          ignoreCase: true,
+          type: "f",
         },
         defaults
       )
@@ -126,8 +126,8 @@ describe("when testing for utilities with logging side-effects", () => {
     const search = new Search(
       shallowMerge(
         {
-          path: `${process.cwd()}`,
           boring: true,
+          path: `${process.cwd()}`,
           short: true,
           stats: true,
         },
@@ -135,7 +135,7 @@ describe("when testing for utilities with logging side-effects", () => {
       )
     );
     await search.start();
-    expect(mockLog).toHaveBeenCalledWith(" bin/teeny-file-search.js");
+    expect(mockLog).toHaveBeenCalledWith(" bin/cli.js");
     expect(mockLog).toHaveBeenCalledWith(" package.json");
     expect(mockLog).toHaveBeenCalledWith(" src");
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
@@ -145,8 +145,8 @@ describe("when testing for utilities with logging side-effects", () => {
     const search = new Search(
       shallowMerge(
         {
-          path: `${process.cwd()}`,
           boring: true,
+          path: `${process.cwd()}`,
           short: true,
           stats: true,
         },
@@ -154,7 +154,7 @@ describe("when testing for utilities with logging side-effects", () => {
       )
     );
     await search.start();
-    expect(mockLog).toHaveBeenCalledWith(" bin/teeny-file-search.js");
+    expect(mockLog).toHaveBeenCalledWith(" bin/cli.js");
     expect(mockLog).toHaveBeenCalledWith(" package.json");
     expect(mockLog).toHaveBeenCalledWith(" src");
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
@@ -163,11 +163,11 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should run a command on the file that matches the pattern", async () => {
     const config = shallowMerge(
       {
-        path: `${process.cwd()}`,
         boring: true,
+        path: `${process.cwd()}`,
+        pattern: "package.json",
         short: true,
         stats: false,
-        pattern: "package.json",
       },
       defaults
     );
@@ -184,11 +184,11 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should run a command on the file that matches the pattern but does not return anything", async () => {
     const config = shallowMerge(
       {
-        path: `${process.cwd()}`,
         boring: true,
+        path: `${process.cwd()}`,
+        pattern: "package.json",
         short: true,
         stats: false,
-        pattern: "package.json",
       },
       defaults
     );
@@ -205,11 +205,11 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should grep some text on the file that matches the pattern", async () => {
     const config = shallowMerge(
       {
-        path: `${process.cwd()}`,
         boring: true,
+        path: `${process.cwd()}`,
+        pattern: "README.md",
         short: true,
         stats: false,
-        pattern: "README.md",
       },
       defaults
     );
@@ -226,12 +226,12 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should grep some text on the file that matches the pattern", async () => {
     const config = shallowMerge(
       {
-        path: `${process.cwd()}`,
         boring: true,
+        ignoreCase: true,
+        path: `${process.cwd()}`,
+        pattern: "package.json",
         short: true,
         stats: false,
-        ignoreCase: true,
-        pattern: "package.json",
       },
       defaults
     );
@@ -245,11 +245,11 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should exit in error if the grep pattern is invalid", async () => {
     const config = shallowMerge(
       {
-        path: `${process.cwd()}`,
         boring: true,
+        path: `${process.cwd()}`,
+        pattern: "package.json",
         short: true,
         stats: false,
-        pattern: "package.json",
       },
       defaults
     );
