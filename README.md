@@ -71,7 +71,7 @@ Path: the path where to search for files or directories (default: current folder
 **Search in all the markdown files under the `src` folder for the keywords "Table of Content"**
 
 ```sh
-> teeny-file-search -type f --pattern ".md$" --grep "Table of Content"
+> teeny-file-search --type f --pattern ".md$" --grep "Table of Content"
 ```
 
 ## License
