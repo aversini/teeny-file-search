@@ -5,13 +5,10 @@ const meow = require("meow");
 const {
   displayErrorMessages,
   meowOptionsHelper,
+  meowParserHelper,
   shallowMerge,
 } = require("teeny-js-utilities");
 const PrettyError = require("pretty-error");
-const TeenyLogger = require("teeny-logger");
-const logger = new TeenyLogger({
-  boring: process.env.NODE_ENV === "test",
-});
 
 const defaults = require("../src/defaults");
 const { Search } = require("../src/search");
@@ -111,44 +108,38 @@ const { helpText, options } = meowOptionsHelper({
 });
 
 const cli = meow(helpText, options);
-
-const { command, grep, help, type, version } = cli.flags;
-
-if (help) {
-  cli.showHelp();
-  process.exit(0);
-}
-
-if (version) {
-  cli.showVersion();
-  process.exit(0);
-}
-
-if (typeof type === "string" && type !== "d" && type !== "f") {
-  logger.error(
-    `Error: option '-t, --type <string>' argument '${type}' is invalid. Valid options are "f" or "d".`
-  );
-  process.exit(1);
-}
-
-if (typeof command === "string" && !command) {
-  logger.error(
-    `Error: option '-c, --command <cmd>' argument '${command}' is invalid.`
-  );
-  process.exit(1);
-}
-
-if (typeof grep === "string" && !grep) {
-  logger.error(
-    `Error: option '-g, --grep <pattern>' argument '${grep}' is invalid.`
-  );
-  process.exit(1);
-}
-
-if (typeof grep === "string" && typeof type === "string" && type === "d") {
-  logger.error(`Error: options "grep" and "type" = "d" are incompatible.`);
-  process.exit(1);
-}
+meowParserHelper({
+  cli,
+  restrictions: [
+    {
+      exit: 1,
+      message: (x) =>
+        `Error: option '-t, --type <string>' argument '${x.type}' is invalid. Valid options are "f" or "d".`,
+      test: (x) =>
+        typeof x.type === "string" && x.type !== "d" && x.type !== "f",
+    },
+    {
+      exit: 1,
+      message: (x) =>
+        `Error: option '-c, --command <cmd>' argument '${x.command}' is invalid.`,
+      test: (x) => typeof x.command === "string" && !x.command,
+    },
+    {
+      exit: 1,
+      message: (x) =>
+        `Error: option '-g, --grep <pattern>' argument '${x.grep}' is invalid.`,
+      test: (x) => typeof x.grep === "string" && !x.grep,
+    },
+    {
+      exit: 1,
+      message: () => `Error: options "grep" and "type" = "d" are incompatible.`,
+      test: (x) =>
+        typeof x.grep === "string" &&
+        typeof x.type === "string" &&
+        x.type === "d",
+    },
+  ],
+});
 
 const customCfg = cli.flags;
 
