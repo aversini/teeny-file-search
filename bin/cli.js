@@ -104,7 +104,7 @@ const { helpText, options } = meowOptionsHelper({
       description: "the path where to search for files or directories",
     },
   },
-  usage: "teeny-file-search [options] [path]",
+  usage: true,
 });
 
 const cli = meow(helpText, options);
