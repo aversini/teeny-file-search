@@ -165,7 +165,7 @@ async function runCommandOnNode(node, command) {
   try {
     const stdout = await runCommand(`${command} ${node}`);
     if (stdout) {
-      logger.log("==>", stdout);
+      logger.log(stdout);
     }
   } catch (e) {
     // nothing to declare officer
