@@ -68,7 +68,7 @@ describe("when testing for utilities with logging side-effects", () => {
         {
           boring: true,
           path: `${process.cwd()}`,
-          pattern: "cli.js",
+          pattern: "README.md",
           short: true,
           stats: true,
           type: "f",
@@ -77,8 +77,11 @@ describe("when testing for utilities with logging side-effects", () => {
       )
     );
     await search.start();
-    expect(mockLog).toHaveBeenCalledWith(" bin/cli.js");
+    expect(mockLog).toHaveBeenCalledWith(" README.md");
     expect(mockLog).toHaveBeenCalledWith(expect.stringContaining("Duration: "));
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total files matching: 2")
+    );
   });
 
   it("should find and list a hidden file based on the arguments", async () => {
@@ -209,17 +212,20 @@ describe("when testing for utilities with logging side-effects", () => {
         path: `${process.cwd()}`,
         pattern: "README.md",
         short: true,
-        stats: false,
+        stats: true,
       },
       defaults
     );
-    config.grep = "^# ";
+    config.grep = "^# Teeny";
 
     const search = new Search(config);
     await search.start();
     expect(mockLog).toHaveBeenCalledWith(" README.md (1 occurrence)");
     expect(mockLog).toHaveBeenCalledWith(
       expect.stringContaining("# Teeny File Search")
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.stringContaining("Total files matching: 1")
     );
   });
 

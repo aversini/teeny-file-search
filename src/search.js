@@ -156,6 +156,15 @@ class Search {
       logger.log();
     }
 
+    if (this.grep) {
+      /**
+       * Resetting the number of files found, since we want to
+       * show how many matched the grep, not how many matched the
+       * pattern (in the file name).
+       */
+      this.totalFileFound = 0;
+    }
+
     for (const node of this.nodesList) {
       if (
         (this.type === STR_TYPE_FILE && node.type === STR_TYPE_FILE) ||
@@ -191,6 +200,7 @@ class Search {
           );
           /* istanbul ignore else */
           if (totalMatchingLines) {
+            this.totalFileFound++;
             const occurrences = plur("occurrence", totalMatchingLines);
             logger.log(
               ` %s${separator}%s${separator}%s${separator}%s${separator}%s`,
