@@ -30,11 +30,11 @@ let mockLog,
 describe("when testing for individual utilities with no logging side-effects", () => {
   it("should merge the default and the customer configuration accurately", async () => {
     expect(shallowMerge(defaults, { hello: true })).toStrictEqual({
+      command: null,
+      foldersBlacklist: /node_modules/gi,
+      grep: null,
       hello: true,
       path: process.cwd(),
-      foldersBlacklist: /node_modules/gi,
-      command: null,
-      grep: null,
     });
   });
 
@@ -64,8 +64,8 @@ describe("when testing for individual utilities with no logging side-effects", (
       await formatLongListings(
         {
           mode: 33188,
-          size: 1024 * 1000,
           mtime: new Date("Jul 4 2020 11:22:00 EST"),
+          size: 1024 * 1000,
           uid: 0,
         },
         "f"
@@ -73,8 +73,8 @@ describe("when testing for individual utilities with no logging side-effects", (
     ).toStrictEqual(
       expect.objectContaining({
         mode: "-rw-r--r--",
-        size: "   1M",
         owner: "root",
+        size: "   1M",
       })
     );
 
@@ -82,8 +82,8 @@ describe("when testing for individual utilities with no logging side-effects", (
       await formatLongListings(
         {
           mode: 33188,
-          size: 1024 * 1000,
           mtime: new Date("Jul 4 2020 11:22:00 EST"),
+          size: 1024 * 1000,
           uid: 0,
         },
         "d"
@@ -91,8 +91,8 @@ describe("when testing for individual utilities with no logging side-effects", (
     ).toStrictEqual(
       expect.objectContaining({
         mode: "drw-r--r--",
-        size: "   1M",
         owner: "root",
+        size: "   1M",
       })
     );
   });
@@ -158,12 +158,12 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should print statistics for files scans in a nice little box", async () => {
     printStatistics({
       duration: 42,
+      pattern: true,
       totalDirScanned: 222,
       totalDirsFound: 111,
       totalFileScanned: 44,
       totalFilesFound: 33,
       type: STR_TYPE_FILE,
-      pattern: true,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -186,12 +186,12 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should print statistics for folders scans in a nice little box", async () => {
     printStatistics({
       duration: 42,
+      pattern: true,
       totalDirScanned: 222,
       totalDirsFound: 111,
       totalFileScanned: 44,
       totalFilesFound: 33,
       type: STR_TYPE_DIRECTORY,
-      pattern: true,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -214,12 +214,12 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should print statistics for files AND folders scans in a nice little box", async () => {
     printStatistics({
       duration: 42,
+      pattern: true,
       totalDirScanned: 222,
       totalDirsFound: 111,
       totalFileScanned: 44,
       totalFilesFound: 33,
       type: STR_TYPE_BOTH,
-      pattern: true,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
@@ -242,12 +242,12 @@ describe("when testing for utilities with logging side-effects", () => {
   it("should print statistics for files AND folders scans in a nice little box, but with no pattern results", async () => {
     printStatistics({
       duration: 42,
+      pattern: false,
       totalDirScanned: 222,
       totalDirsFound: 111,
       totalFileScanned: 44,
       totalFilesFound: 33,
       type: STR_TYPE_BOTH,
-      pattern: false,
     });
 
     expect(mockLog).toHaveBeenCalledWith(
