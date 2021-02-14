@@ -24,55 +24,23 @@ Node.js version 12 or higher is required.
 
 **Get help**
 
-```sh
-> teeny-file-search --help
-Usage: teeny-file-search [options] [path]
+<img src="https://raw.githubusercontent.com/aversini/teeny-file-search/master/configuration/screenshots/help.png" alt="help example">
 
-Options:
-  -b, --boring            Do not use color output (default: false)
-  -c, --command <cmd>     Command to execute over each node (ex: chmod +x)
-  --dot                   Show hidden files and directories (default: false)
-  -g, --grep <pattern>    A regular expression to match the content of the files found
-  -h, --help              Display help instructions
-  -i, --ignore-case       Ignore case when searching (default: false)
-  -p, --pattern <string>  A regular expression to match file or folder names (default: null)
-  -s, --stats             Display some statistics (default: false)
-  --short                 Short listing format (equivalent to ls) (default: false)
-  -t, --type <string>     Search for files (f) or directories (d)
-  -v, --version           Output the current version
+**Find files with the extension ".js" in the `src` folder**
 
-Path: the path where to search for files or directories (default: current folder)
-```
-
-**Find files with the extension ".jsx" in the `src` folder**
-
-```sh
-> teeny-file-search --type f --pattern ".jsx$" src
-```
+<img src="https://raw.githubusercontent.com/aversini/teeny-file-search/master/configuration/screenshots/example1.png" alt="example with file extension">
 
 **Find folders which name or path includes \_\_tests\_\_ in the `src` folder**
 
-```sh
-> teeny-file-search --type d --pattern "__tests__" src
-```
+<img src="https://raw.githubusercontent.com/aversini/teeny-file-search/master/configuration/screenshots/example2.png" alt="example with folder name">
 
-**Change the permissions to executable for all the files found under the `bin` folder**
+**Search in all the markdown files under the current folder with the keywords "Table of Content"**
 
-```sh
-> teeny-file-search --type f --command "chmod +x"
-```
+<img src="https://raw.githubusercontent.com/aversini/teeny-file-search/master/configuration/screenshots/example3.png" alt="example with grep">
 
 **Change the permissions to executable for all the files with extension ".sh" found under the `bin` folder**
 
-```sh
-> teeny-file-search --type f --pattern=".sh$" --command "chmod +x"
-```
-
-**Search in all the markdown files under the `src` folder for the keywords "Table of Content"**
-
-```sh
-> teeny-file-search --type f --pattern ".md$" --grep "Table of Content"
-```
+<img src="https://raw.githubusercontent.com/aversini/teeny-file-search/master/configuration/screenshots/example4.png" alt="example with command">
 
 ## License
 
