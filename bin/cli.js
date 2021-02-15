@@ -2,6 +2,7 @@
 
 const fs = require("fs-extra");
 const meow = require("meow");
+const { red } = require("kleur");
 const {
   displayErrorMessages,
   meowOptionsHelper,
@@ -12,6 +13,7 @@ const PrettyError = require("pretty-error");
 
 const defaults = require("../src/defaults");
 const { Search } = require("../src/search");
+const { STR_TYPE_FILE } = require("../src/utilities");
 
 const pe = new PrettyError();
 // Automatically prettifying all exceptions that are logged
@@ -114,25 +116,32 @@ meowParserHelper({
     {
       exit: 1,
       message: (x) =>
-        `Error: option '-t, --type <string>' argument '${x.type}' is invalid. Valid options are "f" or "d".`,
+        red(
+          `\nError: option '-t, --type <string>' argument '${x.type}' is invalid. Valid options are "f" or "d".`
+        ),
       test: (x) =>
         typeof x.type === "string" && x.type !== "d" && x.type !== "f",
     },
     {
       exit: 1,
       message: (x) =>
-        `Error: option '-c, --command <cmd>' argument '${x.command}' is invalid.`,
+        red(
+          `\nError: option '-c, --command <cmd>' argument '${x.command}' is invalid.`
+        ),
       test: (x) => typeof x.command === "string" && !x.command,
     },
     {
       exit: 1,
       message: (x) =>
-        `Error: option '-g, --grep <pattern>' argument '${x.grep}' is invalid.`,
+        red(
+          `\nError: option '-g, --grep <pattern>' argument '${x.grep}' is invalid.`
+        ),
       test: (x) => typeof x.grep === "string" && !x.grep,
     },
     {
       exit: 1,
-      message: () => `Error: options "grep" and "type" = "d" are incompatible.`,
+      message: () =>
+        red(`\nError: options "grep" and "type" = "d" are incompatible.`),
       test: (x) =>
         typeof x.grep === "string" &&
         typeof x.type === "string" &&
@@ -159,6 +168,8 @@ if (cli.input.length) {
 if (customCfg.grep) {
   // forcing simplified display if grep is true.
   customCfg.short = true;
+  // And forcing type to files
+  customCfg.type = STR_TYPE_FILE;
 }
 const config = shallowMerge(defaults, customCfg);
 
