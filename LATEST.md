@@ -1,6 +1,6 @@
 
 ### Bug Fixes
 
-* invalid stats (total files found) when grep is used ([368054b](https://github.com/aversini/teeny-file-search/commit/368054b6254f748f8709795a4d92bfe18faa9448))
-* removing dubug log prefix ([9201124](https://github.com/aversini/teeny-file-search/commit/92011241c4e3428b46b6997648c85c7f7bc1f3fe))
+* errors are not obvious enough ([ca5ef1e](https://github.com/aversini/teeny-file-search/commit/ca5ef1e1457fa421cc9a9c0216f9d3829f03e9ae))
+* minor UI refinement - removing extra line if in grep mode ([298bfd3](https://github.com/aversini/teeny-file-search/commit/298bfd3aa339cb4a25429dbe4d11616de5e6fc88))
 
