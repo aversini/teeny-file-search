@@ -3,7 +3,7 @@ const fs = require("fs");
 const kleur = require("kleur");
 const { basename, join, relative } = require("path");
 const plur = require("plur");
-const { Performance } = require("teeny-js-utilities");
+const { Performance } = require("teeny-perf");
 const TeenyLogger = require("teeny-logger");
 const { promisify } = require("util");
 
