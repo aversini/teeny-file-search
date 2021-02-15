@@ -89,6 +89,7 @@ class Search {
       perf.stop();
       printStatistics({
         duration: perf.results.duration,
+        grep: this.grep,
         pattern: this.rePattern,
         totalDirScanned: this.totalDirScanned,
         totalDirsFound: this.totalDirFound,

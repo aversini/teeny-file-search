@@ -122,6 +122,7 @@ const printStatistics = ({
   totalFilesFound,
   type,
   pattern,
+  grep,
 }) => {
   let msg = `Total folders scanned: ${yellow(totalDirScanned)}\n`;
   msg += `Total files scanned: ${yellow(totalFileScanned)}\n`;
@@ -143,7 +144,9 @@ const printStatistics = ({
   }
 
   msg += `Duration: ${yellow(`${prettyMilliseconds(duration)}`)}`;
-  logger.log();
+  if (!grep) {
+    logger.log();
+  }
   logger.log(
     boxen(msg, {
       align: "center",
