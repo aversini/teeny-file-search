@@ -63,21 +63,28 @@ class Search {
       logger.error(e);
       process.exit(1);
     }
+
+    // binding methods - so that node 10 can be supported for a little longer
+    this.ignoreFolders = this.ignoreFolders.bind(this);
+    this.filterHidden = this.filterHidden.bind(this);
+    this.start = this.start.bind(this);
+    this.scanFileSystem = this.scanFileSystem.bind(this);
+    this.postProcessResults = this.postProcessResults.bind(this);
   }
 
-  ignoreFolders = (dir) => {
+  ignoreFolders(dir) {
     this.foldersBlacklist.lastIndex = 0;
     return this.foldersBlacklist.test(basename(dir));
-  };
+  }
 
-  filterHidden = (val) => {
+  filterHidden(val) {
     if (this.displayHiddenFilesAndFolders) {
       return true;
     }
     return val[0] !== ".";
-  };
+  }
 
-  start = async () => {
+  async start() {
     if (this.displayStats) {
       perf.start();
     }
@@ -98,9 +105,9 @@ class Search {
         type: this.type,
       });
     }
-  };
+  }
 
-  scanFileSystem = async (nodes) => {
+  async scanFileSystem(nodes) {
     for (const node of nodes) {
       let res, files, shortname, stat;
       try {
@@ -149,9 +156,9 @@ class Search {
         }
       }
     }
-  };
+  }
 
-  postProcessResults = async () => {
+  async postProcessResults() {
     /* istanbul ignore if */
     if (!this.boring) {
       logger.log();
@@ -233,7 +240,7 @@ class Search {
         }
       }
     }
-  };
+  }
 }
 
 module.exports = {
