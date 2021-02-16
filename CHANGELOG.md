@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/aversini/teeny-file-search/compare/v1.1.2...v1.2.0) (2021-02-16)
+
+
+### Features
+
+* re-adding support for node 10 ([a326adf](https://github.com/aversini/teeny-file-search/commit/a326adfac7cd31719e6d7dadde907b2d2c1aca09))
+
+
+
 ## [1.1.2](https://github.com/aversini/teeny-file-search/compare/v1.1.1...v1.1.2) (2021-02-15)
 
 
