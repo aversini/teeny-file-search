@@ -59,7 +59,7 @@
     "pretty-error": "3.0.3",
     "pretty-ms": "7.0.1",
     "teeny-js-utilities": "^3.0.0",
-    "teeny-logger": "^0.2.0",
+    "teeny-logger": "^1.0.0",
     "teeny-perf": "^1.0.0"
   }
 }
