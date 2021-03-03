@@ -16,10 +16,6 @@
 > npm install --global teeny-file-search
 ```
 
-## Requirements
-
-Node.js version 12 or higher is required.
-
 ## Examples
 
 **Get help**
