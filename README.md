@@ -10,6 +10,8 @@
 > - find files or folders that match a certain pattern
 > - look for string within those files and display them (think find and grep)
 
+**DEPRECATION NOTICE:** For newer Node versions support, please use https://github.com/aversini/node-cli/tree/main/packages/search
+
 ## Installation
 
 ```sh
